@@ -38,7 +38,7 @@ public class TCPServer
         {
             string incomingMessage = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
 
-            byte[] response = Encoding.UTF8.GetBytes("PONG");
+            byte[] response = Encoding.UTF8.GetBytes("+PONG\r\n");
 
             tcpStream.Write(response,0, response.Length);
 
