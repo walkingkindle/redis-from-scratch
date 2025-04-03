@@ -19,7 +19,7 @@ namespace codecrafters_redis.src.Impelementations
             {
                byte[] buffer = new byte[256];
 
-               var readTotal = stream.Read(buffer, 0, buffer.Length);
+               var readTotal = await stream.ReadAsync(buffer, 0, buffer.Length);
 
                string incomingMessage = Encoding.UTF8.GetString(buffer, 0, readTotal);
 
