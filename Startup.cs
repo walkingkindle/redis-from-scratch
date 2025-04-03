@@ -13,7 +13,7 @@ namespace Main
         {
             services.AddSingleton<TcpListener>(sp =>
             {
-                var ipEndPoint = new IPEndPoint(IPAddress.Any, 4221);
+                var ipEndPoint = new IPEndPoint(IPAddress.Any, 6379);
                 var listener = new TcpListener(ipEndPoint);
                 return listener;
             });
