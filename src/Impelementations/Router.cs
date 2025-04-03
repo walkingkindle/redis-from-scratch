@@ -33,11 +33,7 @@ namespace codecrafters_redis.src.Impelementations
             {
                 Console.WriteLine($"Client error: {ex.Message}");
             }
-            finally
-            {
-                handler.Close();
-            }
-    }
+        }
 
     }
  }
