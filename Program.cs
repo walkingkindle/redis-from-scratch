@@ -41,9 +41,5 @@ class Program
         {
             Console.WriteLine($"Server error: {ex.Message}");
         }
-        finally
-        {
-            listener.Stop();
-        }
     }
 }
