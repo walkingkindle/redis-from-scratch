@@ -14,8 +14,6 @@ namespace codecrafters_redis.src.Impelementations
 
                 await stream.WriteAsync(outgoingMessage);
             }
-
-            await stream.WriteAsync(Encoding.UTF8.GetBytes("Error"));
         }
     }
 }

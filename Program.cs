@@ -26,7 +26,7 @@ class Program
         var clientHandler = host.Services.GetRequiredService<IRouteManagerService>();
 
         listener.Start();
-        Console.WriteLine("Server is running on port 4221...");
+        Console.WriteLine("Server is running on port 6739...");
 
         try
         {

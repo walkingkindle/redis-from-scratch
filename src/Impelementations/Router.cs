@@ -27,9 +27,7 @@ namespace codecrafters_redis.src.Impelementations
                 {
                     throw new Exception("Did not read anything from the stream");
                 }
-
                 await _streamWriter.WriteToStream(stream, incomingMessage);
-
             }
             catch (Exception ex)
             {
