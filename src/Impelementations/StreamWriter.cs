@@ -8,7 +8,7 @@ namespace codecrafters_redis.src.Impelementations
     {
         public async ValueTask WriteToStream(NetworkStream stream, string incomingMessage)
         {
-            if (incomingMessage == "*1\r\n$4\r\nPING\r\n")
+            if (incomingMessage.Contains("PING"))
             {
                 byte[] outgoingMessage = Encoding.UTF8.GetBytes("+PONG\r\n");
 
