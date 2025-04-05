@@ -7,9 +7,11 @@ namespace codecrafters_redis.src.Impelementations
     public class Router: IRouteManagerService
     {
         private readonly IStreamWriter _streamWriter;
-        public Router(IStreamWriter streamWriter)
+        private readonly IRespParser _parser;
+        public Router(IStreamWriter streamWriter, IRespParser parser)
         {
             _streamWriter = streamWriter;
+            _parser = parser;
             
         }
 
@@ -19,21 +21,14 @@ namespace codecrafters_redis.src.Impelementations
             {
                 byte[] buffer = new byte[256];
 
-                while (true)
+                while (handler.Connected)
                 {
                     int readTotal = await stream.ReadAsync(buffer, 0, buffer.Length);
 
-                    if (readTotal == 0)
-                    {
-                        // Client disconnected
-                        break;
-                    }
-                    string incomingMessage = Encoding.UTF8.GetString(buffer, 0, readTotal);
+                    if (readTotal == 0) break;
 
-                    if (string.IsNullOrEmpty(incomingMessage))
-                    {
-                        throw new Exception("Did not read anything from the stream");
-                    }
+                    string incomingMessage = _parser.ParseRespString(buffer, readTotal);
+
                     await _streamWriter.WriteToStream(stream, incomingMessage);
                 }
             }

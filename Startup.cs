@@ -21,6 +21,8 @@ namespace Main
             services.AddTransient<IRouteManagerService, Router>();
 
             services.AddTransient<IStreamWriter, StreamWriter>();
+
+            services.AddTransient<IRespParser, RespParser>();
         }
 
         }
