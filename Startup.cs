@@ -1,6 +1,7 @@
 ﻿using codecrafters_redis.src.Impelementations;
 using codecrafters_redis.src.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using StreamWriter = codecrafters_redis.src.Impelementations.StreamWriter;
@@ -17,6 +18,7 @@ namespace Main
                 var listener = new TcpListener(ipEndPoint);
                 return listener;
             });
+            services.AddSingleton<Dictionary<string, string>>();
 
             services.AddTransient<IRouteManagerService, Router>();
 
