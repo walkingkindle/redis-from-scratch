@@ -8,10 +8,12 @@ namespace codecrafters_redis.src.Impelementations
     {
         private readonly IStreamWriter _streamWriter;
         private readonly IRespParser _parser;
-        public Router(IStreamWriter streamWriter, IRespParser parser)
+        private readonly IEndpointHandler _endPointHandler;
+        public Router(IStreamWriter streamWriter, IRespParser parser, IEndpointHandler endpointHandler)
         {
             _streamWriter = streamWriter;
             _parser = parser;
+            _endPointHandler = endpointHandler;
             
         }
 
@@ -27,9 +29,11 @@ namespace codecrafters_redis.src.Impelementations
 
                     if (readTotal == 0) break;
 
-                    string incomingMessage = _parser.ParseRespString(buffer, readTotal);
+                    Endpoint incomingMessage = _parser.ParseRespString(buffer, readTotal);
 
-                    await _streamWriter.WriteToStream(stream, incomingMessage);
+                    string outgoingMessage = _endPointHandler.Handle(incomingMessage);
+
+                    await _streamWriter.WriteToStream(stream, outgoingMessage);
                 }
             }
             catch (Exception ex)

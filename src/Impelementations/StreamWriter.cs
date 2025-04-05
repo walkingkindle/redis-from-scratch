@@ -6,14 +6,11 @@ namespace codecrafters_redis.src.Impelementations
 {
     public class StreamWriter : IStreamWriter
     {
-        public async ValueTask WriteToStream(NetworkStream stream, string incomingMessage)
+        public async ValueTask WriteToStream(NetworkStream stream, string outgoingMessage)
         {
-            if (incomingMessage.Contains("PING"))
-            {
-                byte[] outgoingMessage = Encoding.UTF8.GetBytes("+PONG\r\n");
+            byte[] outgoingMessageBytes = Encoding.UTF8.GetBytes(outgoingMessage);
 
-                await stream.WriteAsync(outgoingMessage);
-            }
+            await stream.WriteAsync(outgoingMessageBytes);
         }
     }
 }

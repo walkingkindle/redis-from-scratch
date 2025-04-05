@@ -23,6 +23,8 @@ namespace Main
             services.AddTransient<IStreamWriter, StreamWriter>();
 
             services.AddTransient<IRespParser, RespParser>();
+
+            services.AddTransient<IEndpointHandler, EndpointHandler>();
         }
 
         }

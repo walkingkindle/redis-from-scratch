@@ -2,6 +2,6 @@
 {
     public interface IRespParser
     {
-        public string ParseRespString(byte[] buffer, int readTotal);
+        public Endpoint ParseRespString(byte[] buffer, int readTotal);
     }
 }

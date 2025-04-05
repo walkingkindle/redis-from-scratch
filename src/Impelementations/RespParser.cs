@@ -5,7 +5,7 @@ namespace codecrafters_redis.src.Impelementations
 {
     public class RespParser : IRespParser
     {
-        public string ParseRespString(byte[] buffer, int readTotal)
+        public Endpoint ParseRespString(byte[] buffer, int readTotal)
         {
             string incomingMessage = Encoding.UTF8.GetString(buffer, 0, readTotal);
 
@@ -17,15 +17,20 @@ namespace codecrafters_redis.src.Impelementations
             return ParseInternal(incomingMessage);
         }
 
-        private string ParseInternal(string raw)
+        private Endpoint ParseInternal(string raw)
         {
-            // Naive RESP array parser: *1\r\n$4\r\nPING\r\n
             var lines = raw.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
 
-            if (lines.Length >= 3 && lines[0].StartsWith("*") && lines[1].StartsWith("$"))
-                return lines[2].ToUpperInvariant();
+            string endpoint = lines[2].ToUpperInvariant();
 
-            return raw.Trim().ToUpperInvariant();
+            if (lines.Length >= 5)
+            {
+                string value = lines[4];
+
+                return Endpoint.CreateEndpoint(endpoint, value);
+            }
+
+            return Endpoint.CreateEndpoint(endpoint, null);
         }
     }
 }
