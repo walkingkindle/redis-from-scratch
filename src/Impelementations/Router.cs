@@ -17,21 +17,33 @@ namespace codecrafters_redis.src.Impelementations
         {
             try
             {
-               byte[] buffer = new byte[256];
+                byte[] buffer = new byte[256];
 
-               var readTotal = await stream.ReadAsync(buffer, 0, buffer.Length);
-
-               string incomingMessage = Encoding.UTF8.GetString(buffer, 0, readTotal);
-
-                if (string.IsNullOrEmpty(incomingMessage))
+                while (true)
                 {
-                    throw new Exception("Did not read anything from the stream");
+                    int readTotal = await stream.ReadAsync(buffer, 0, buffer.Length);
+
+                    if (readTotal == 0)
+                    {
+                        // Client disconnected
+                        break;
+                    }
+                    string incomingMessage = Encoding.UTF8.GetString(buffer, 0, readTotal);
+
+                    if (string.IsNullOrEmpty(incomingMessage))
+                    {
+                        throw new Exception("Did not read anything from the stream");
+                    }
+                    await _streamWriter.WriteToStream(stream, incomingMessage);
                 }
-                await _streamWriter.WriteToStream(stream, incomingMessage);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Client error: {ex.Message}");
+            }
+            finally{
+                stream.Close();
+                handler.Close();
             }
         }
 
